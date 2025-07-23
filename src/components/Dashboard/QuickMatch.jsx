@@ -449,11 +449,12 @@ const QuickMatch = () => {
               style={{
                 borderRadius: '0.375rem',
                 padding: '6px',
-                backgroundColor: activeTab === "upcoming" ? 'white' : 'transparent',
+                backgroundColor: activeTab === "upcoming" ? '#D7EE34' : 'white',
                 color: activeTab === "upcoming" ? '#111827' : '#6b7280',
                 boxShadow: activeTab === "upcoming" ? '0 1px 2px 0 rgb(0 0 0 / 0.05)' : 'none',
                 fontWeight: '500',
-                fontSize: '0.75rem'
+                fontSize: '0.75rem',
+                border: 'none',
               }}
             >
               Upcoming
@@ -463,11 +464,14 @@ const QuickMatch = () => {
               style={{
                 borderRadius: '0.375rem',
                 padding: '6px',
-                backgroundColor: activeTab === "registered" ? 'white' : 'transparent',
+                gap:"2px",
+                backgroundColor: activeTab === "registered" ? '#D7EE34' : 'white',
                 color: activeTab === "registered" ? '#111827' : '#6b7280',
                 boxShadow: activeTab === "registered" ? '0 1px 2px 0 rgb(0 0 0 / 0.05)' : 'none',
                 fontWeight: '500',
-                fontSize: '0.75rem'
+                fontSize: '0.75rem',
+                border: 'none',
+                marginLeft: '4px'
               }}
             >
               My Matches
@@ -477,11 +481,13 @@ const QuickMatch = () => {
               style={{
                 borderRadius: '0.375rem',
                 padding: '6px',
-                backgroundColor: activeTab === "history" ? 'white' : 'transparent',
+                backgroundColor: activeTab === "history" ? '#D7EE34' : 'white',
                 color: activeTab === "history" ? '#111827' : '#6b7280',
                 boxShadow: activeTab === "history" ? '0 1px 2px 0 rgb(0 0 0 / 0.05)' : 'none',
                 fontWeight: '500',
-                fontSize: '0.75rem'
+                fontSize: '0.75rem',
+                border: 'none',
+                marginLeft: '4px' 
               }}
             >
               History
