@@ -140,7 +140,7 @@ const SplashScreen = () => {
 
           <motion.button
             whileTap={{ scale: 0.95 }}
-            onClick={() => navigate('/login')}
+            onClick={() => navigate('/register')}
             style={outlineButtonStyle}
           >
             Sign In

@@ -23,7 +23,7 @@ const CourtBooking = () => {
       availability: "Available",
       sports: ["Badminton", "Squash"],
       amenities: ["Air Conditioned", "Shower Facilities", "Racket Rental", "Water Dispenser"],
-      image: "/badminton-court.jpg"
+      image: "https://res.cloudinary.com/de6u5kbiw/image/upload/v1752131814/dexciss%20site/dexplay/optimal/400/badminton_x400/pexels-shvets-production-8007094_x400_fadifa.jpg"
     },
     {
       id: 2,
@@ -36,7 +36,7 @@ const CourtBooking = () => {
       availability: "Limited",
       sports: ["Football", "Cricket"],
       amenities: ["Changing Rooms", "Cafeteria", "Parking", "First Aid"],
-      image: "/football-field.jpg"
+      image: "https://res.cloudinary.com/de6u5kbiw/image/upload/v1752131769/dexciss%20site/dexplay/optimal/400/football_x400/pexels-lucasallmann-1378425_x400_kltjeh.jpg"
     },
     {
       id: 3,
@@ -49,7 +49,7 @@ const CourtBooking = () => {
       availability: "Available",
       sports: ["Tennis", "Basketball"],
       amenities: ["Lighting", "Pro Shop", "Coaching", "Seating"],
-      image: "/tennis-court.jpg"
+      image: "https://res.cloudinary.com/de6u5kbiw/image/upload/v1752131755/dexciss%20site/dexplay/optimal/400/tennis_x400/pexels-athena-2961964_x400_imcjdu.jpg"
     }
   ];
 
