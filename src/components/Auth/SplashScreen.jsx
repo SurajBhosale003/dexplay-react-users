@@ -31,8 +31,9 @@ const SplashScreen = () => {
     padding: '32px 24px 50px', // Removed bottom padding
     backgroundColor: 'white',
     position: 'relative',
+    marginBottom: '-80px',
     zIndex: 20,
-    background: 'linear-gradient(to bottom, transparent, transparent, hsla(65, 97%, 58%, 0.51))'
+    background: 'linear-gradient(to bottom, transparent, transparent, hsla(60, 4%, 22%, 0.51))'
   };
 
   const buttonStyle = {
