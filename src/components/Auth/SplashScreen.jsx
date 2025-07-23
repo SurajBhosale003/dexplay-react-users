@@ -23,7 +23,7 @@ const SplashScreen = () => {
   const overlayStyle = {
     position: 'absolute',
     inset: 0,
-    background: 'linear-gradient(to top, transparent, transparent, rgba(0, 0, 0, 0))',
+    background: 'linear-gradient(to top, transparent, transparent, rgba(190, 211, 57, 0.74))',
     zIndex: 10
   };
 
@@ -33,7 +33,7 @@ const SplashScreen = () => {
     position: 'relative',
     marginBottom: '-80px',
     zIndex: 20,
-    background: 'linear-gradient(to bottom, transparent, transparent, hsla(60, 4%, 22%, 0.51))'
+    background: 'linear-gradient(to bottom, transparent, transparent, rgba(190, 211, 57, 0.74))'
   };
 
   const buttonStyle = {
