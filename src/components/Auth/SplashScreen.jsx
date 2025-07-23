@@ -8,7 +8,6 @@ const SplashScreen = () => {
 
   const containerStyle = {
     minHeight: '100vh',
-    position: 'fixed',
     backgroundColor: 'white',
     display: 'flex',
     flexDirection: 'column',
