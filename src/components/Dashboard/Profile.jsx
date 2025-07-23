@@ -332,7 +332,7 @@ const Profile = () => {
               position: "relative"
             }}>
               {/* "use client" badge */}
-              <div style={{
+              {/* <div style={{
                 position: "absolute",
                 top: "8px",
                 right: "8px",
@@ -343,7 +343,7 @@ const Profile = () => {
                 border: "1px solid #e5e7eb"
               }}>
                 use client
-              </div>
+              </div> */}
               
               <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
                 <div style={{
