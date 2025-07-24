@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Settings, Trophy, Calendar, Star, Edit3, TrendingUp, Award, Target, ChevronRight, Plus, Copy, Share2, BarChart2, Check } from "lucide-react";
+import { Settings, Trophy, Calendar, Star, Edit3, TrendingUp, Award, Target, ChevronRight, Plus, Copy, Share2, BarChart2, Check, X, User, Lock, Bell, HelpCircle, LogOut, Image as ImageIcon, Mail, Key } from "lucide-react";
 
 const Profile = () => {
   // Theme colors - Updated primary color to #D7EE34
@@ -113,6 +113,26 @@ const Profile = () => {
 
   const [expandedMatch, setExpandedMatch] = useState(null);
   const [copiedJoinCode, setCopiedJoinCode] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
+  const [showEditProfile, setShowEditProfile] = useState(false);
+  const [showSchedule, setShowSchedule] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [showEditCover, setShowEditCover] = useState(false);
+  const [showAccountSettings, setShowAccountSettings] = useState(false);
+  const [profileData, setProfileData] = useState({
+    name: "Alex Johnson",
+    age: "25",
+    location: "New York",
+    email: "alex.johnson@example.com"
+  });
+  const [coverPhoto, setCoverPhoto] = useState("https://images.unsplash.com/photo-1574629810360-7efbbe195018?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80");
+  const [accountSettings, setAccountSettings] = useState({
+    email: "alex.johnson@example.com",
+    currentPassword: "",
+    newPassword: "",
+    confirmPassword: ""
+  });
+  const [profileImage, setProfileImage] = useState("https://thumbs.dreamstime.com/b/happy-old-man-29332682.jpg");
 
   const toggleMatchExpand = (id) => {
     setExpandedMatch(expandedMatch === id ? null : id);
@@ -124,11 +144,50 @@ const Profile = () => {
     setTimeout(() => setCopiedJoinCode(false), 2000);
   };
 
+  const handleProfileSubmit = (e) => {
+    e.preventDefault();
+    setShowEditProfile(false);
+    setShowSuccess(true);
+    setTimeout(() => setShowSuccess(false), 3000);
+  };
+
+  const handleCoverPhotoChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        setCoverPhoto(event.target.result);
+      };
+      reader.readAsDataURL(file);
+    }
+    setShowEditCover(false);
+  };
+
+  const handleProfileImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        setProfileImage(event.target.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleAccountSettingsSubmit = (e) => {
+    e.preventDefault();
+    // Here you would typically handle password change logic
+    setShowAccountSettings(false);
+    setShowSuccess(true);
+    setTimeout(() => setShowSuccess(false), 3000);
+  };
+
   return (
     <div style={{ 
       minHeight: "100vh", 
       backgroundColor: theme.background,
-      paddingBottom: "80px" // For navbar space
+      paddingBottom: "80px", // For navbar space
+      position: "relative"
     }}>
       {/* Header */}
       <div style={{
@@ -150,18 +209,21 @@ const Profile = () => {
             fontWeight: "bold",
             color: theme.text
           }}>My Profile</h1>
-          <button style={{
-            background: "transparent",
-            border: "none",
-            width: "40px",
-            height: "40px",
-            borderRadius: "50%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            color: theme.primary,
-            cursor: "pointer"
-          }}>
+          <button 
+            style={{
+              background: "transparent",
+              border: "none",
+              width: "40px",
+              height: "40px",
+              borderRadius: "50%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              color: theme.primary,
+              cursor: "pointer"
+            }}
+            onClick={() => setShowSettings(true)}
+          >
             <Settings style={{ width: "20px", height: "20px" }} />
           </button>
         </div>
@@ -179,23 +241,28 @@ const Profile = () => {
           <div style={{ 
             height: "128px", 
             width: "100%", 
-            backgroundColor: theme.primary,
+            backgroundImage: `url(${coverPhoto})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
             position: "relative"
           }}>
-            <button style={{
-              position: "absolute",
-              top: "16px",
-              right: "16px",
-              backgroundColor: "rgba(255, 255, 255, 0.9)",
-              color: "#111827",
-              border: "none",
-              borderRadius: "6px",
-              padding: "6px 12px",
-              fontSize: "0.875rem",
-              display: "flex",
-              alignItems: "center",
-              cursor: "pointer"
-            }}>
+            <button 
+              style={{
+                position: "absolute",
+                top: "16px",
+                right: "16px",
+                backgroundColor: "rgba(255, 255, 255, 0.9)",
+                color: "#111827",
+                border: "none",
+                borderRadius: "6px",
+                padding: "6px 12px",
+                fontSize: "0.875rem",
+                display: "flex",
+                alignItems: "center",
+                cursor: "pointer"
+              }}
+              onClick={() => setShowEditCover(true)}
+            >
               <Edit3 style={{ width: "16px", height: "16px", marginRight: "8px" }} />
               Edit Cover
             </button>
@@ -210,7 +277,7 @@ const Profile = () => {
               marginTop: "-48px"
             }}>
               <div style={{ position: "relative" }}>
-                <div style={{
+                <label style={{
                   position: "relative",
                   width: "96px",
                   height: "96px",
@@ -221,10 +288,17 @@ const Profile = () => {
                   alignItems: "center",
                   justifyContent: "center",
                   overflow: "hidden",
-                  boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)"
+                  boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
+                  cursor: "pointer"
                 }}>
+                  <input 
+                    type="file" 
+                    style={{ display: "none" }}
+                    accept="image/*"
+                    onChange={handleProfileImageChange}
+                  />
                   <img
-                    src="https://thumbs.dreamstime.com/b/happy-old-man-29332682.jpg"
+                    src={profileImage}
                     alt="Profile"
                     style={{
                       position: "absolute",
@@ -233,23 +307,26 @@ const Profile = () => {
                       objectFit: "cover"
                     }}
                   />
-                </div>
+                </label>
 
-                <button style={{
-                  position: "absolute",
-                  bottom: "-8px",
-                  right: "-8px",
-                  width: "36px",
-                  height: "36px",
-                  borderRadius: "50%",
-                  backgroundColor: theme.secondary,
-                  border: "none",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
-                  cursor: "pointer"
-                }}>
+                <button 
+                  style={{
+                    position: "absolute",
+                    bottom: "-8px",
+                    right: "-8px",
+                    width: "36px",
+                    height: "36px",
+                    borderRadius: "50%",
+                    backgroundColor: theme.secondary,
+                    border: "none",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
+                    cursor: "pointer"
+                  }}
+                  onClick={() => setShowEditProfile(true)}
+                >
                   <Edit3 style={{ width: "16px", height: "16px", color: "white" }} />
                 </button>
               </div>
@@ -268,14 +345,14 @@ const Profile = () => {
                       marginBottom: "4px",
                       color: theme.text
                     }}>
-                      Alex Johnson
+                      {profileData.name}
                     </h2>
                     <p style={{ 
                       fontSize: "0.875rem", 
                       marginBottom: "8px",
                       color: theme.lightText
                     }}>
-                      Age 25 • New York
+                      Age {profileData.age} • {profileData.location}
                     </p>
                   </div>
                   <span style={{
@@ -331,20 +408,6 @@ const Profile = () => {
               transition: "transform 0.2s",
               position: "relative"
             }}>
-              {/* "use client" badge */}
-              {/* <div style={{
-                position: "absolute",
-                top: "8px",
-                right: "8px",
-                fontSize: "0.75rem",
-                padding: "2px 6px",
-                borderRadius: "9999px",
-                backgroundColor: "rgba(255, 255, 255, 0.9)",
-                border: "1px solid #e5e7eb"
-              }}>
-                use client
-              </div> */}
-              
               <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
                 <div style={{
                   width: "40px",
@@ -926,37 +989,749 @@ const Profile = () => {
 
         {/* Action Buttons */}
         <div style={{ display: "flex", flexDirection: "column", gap: "12px", paddingBottom: "24px" }}>
-          <button style={{
-            width: "100%",
-            height: "48px",
-            borderRadius: "16px",
-            backgroundColor: theme.primary,
-            border: "none",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            boxShadow: "0 1px 3px 0 rgba(0, 0, 0, 0.1)",
-            cursor: "pointer"
-          }}>
+          <button 
+            style={{
+              width: "100%",
+              height: "48px",
+              borderRadius: "16px",
+              backgroundColor: theme.primary,
+              border: "none",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              boxShadow: "0 1px 3px 0 rgba(0, 0, 0, 0.1)",
+              cursor: "pointer"
+            }}
+            onClick={() => setShowSchedule(true)}
+          >
             <Calendar style={{ width: "20px", height: "20px", marginRight: "8px" }} />
             View Full Schedule
           </button>
-          <button style={{
-            width: "100%",
-            height: "48px",
-            borderRadius: "16px",
-            backgroundColor: "transparent",
-            border: "1px solid #e5e7eb",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            cursor: "pointer"
-          }}>
+          <button 
+            style={{
+              width: "100%",
+              height: "48px",
+              borderRadius: "16px",
+              backgroundColor: "transparent",
+              border: "1px solid #e5e7eb",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              cursor: "pointer"
+            }}
+            onClick={() => setShowAccountSettings(true)}
+          >
             <Settings style={{ width: "20px", height: "20px", marginRight: "8px" }} />
             Account Settings
           </button>
         </div>
       </div>
+
+      {/* Settings Modal */}
+      {showSettings && (
+        <div style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: "rgba(0, 0, 0, 0.5)",
+          zIndex: 50,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center"
+        }}>
+          <div style={{
+            backgroundColor: "white",
+            borderRadius: "16px",
+            width: "90%",
+            maxWidth: "400px",
+            overflow: "hidden",
+            boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1)"
+          }}>
+            <div style={{
+              padding: "16px",
+              borderBottom: "1px solid #f3f4f6",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between"
+            }}>
+              <h3 style={{ fontSize: "1.25rem", fontWeight: "bold" }}>Settings</h3>
+              <button 
+                style={{
+                  background: "transparent",
+                  border: "none",
+                  cursor: "pointer"
+                }}
+                onClick={() => setShowSettings(false)}
+              >
+                <X style={{ width: "20px", height: "20px" }} />
+              </button>
+            </div>
+            
+            <div style={{ padding: "8px 0" }}>
+              {[
+                { icon: User, label: "Profile Settings", action: () => { setShowSettings(false); setShowEditProfile(true); } },
+                { icon: Lock, label: "Privacy" },
+                { icon: Bell, label: "Notifications" },
+                { icon: HelpCircle, label: "Help & Support" },
+                { icon: LogOut, label: "Log Out", color: "#ef4444" }
+              ].map((item, index) => (
+                <div 
+                  key={index}
+                  style={{
+                    padding: "12px 16px",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "12px",
+                    cursor: "pointer",
+                    transition: "background-color 0.2s",
+                    ":hover": {
+                      backgroundColor: "#f9fafb"
+                    }
+                  }}
+                  onClick={item.action || (() => {})}
+                >
+                  <item.icon style={{ 
+                    width: "20px", 
+                    height: "20px", 
+                    color: item.color || theme.text 
+                  }} />
+                  <span style={{ 
+                    fontSize: "0.9375rem",
+                    color: item.color || theme.text
+                  }}>
+                    {item.label}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Edit Profile Modal */}
+      {showEditProfile && (
+        <div style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: "rgba(0, 0, 0, 0.5)",
+          zIndex: 50,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center"
+        }}>
+          <div style={{
+            backgroundColor: "white",
+            borderRadius: "16px",
+            width: "90%",
+            maxWidth: "400px",
+            overflow: "hidden",
+            boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1)"
+          }}>
+            <div style={{
+              padding: "16px",
+              borderBottom: "1px solid #f3f4f6",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between"
+            }}>
+              <h3 style={{ fontSize: "1.25rem", fontWeight: "bold" }}>Edit Profile</h3>
+              <button 
+                style={{
+                  background: "transparent",
+                  border: "none",
+                  cursor: "pointer"
+                }}
+                onClick={() => setShowEditProfile(false)}
+              >
+                <X style={{ width: "20px", height: "20px" }} />
+              </button>
+            </div>
+            
+            <div style={{ padding: "16px" }}>
+              <form onSubmit={handleProfileSubmit}>
+                <div style={{ marginBottom: "16px", textAlign: "center" }}>
+                  <label style={{
+                    position: "relative",
+                    width: "96px",
+                    height: "96px",
+                    borderRadius: "50%",
+                    border: "4px solid white",
+                    backgroundColor: "#f3f4f6",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    overflow: "hidden",
+                    boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
+                    cursor: "pointer"
+                  }}>
+                    <input 
+                      type="file" 
+                      style={{ display: "none" }}
+                      accept="image/*"
+                      onChange={handleProfileImageChange}
+                    />
+                    <img
+                      src={profileImage}
+                      alt="Profile"
+                      style={{
+                        position: "absolute",
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover"
+                      }}
+                    />
+                  </label>
+                </div>
+                
+                <div style={{ marginBottom: "16px" }}>
+                  <label style={{ 
+                    display: "block", 
+                    marginBottom: "8px",
+                    fontSize: "0.875rem",
+                    fontWeight: "500",
+                    color: theme.text
+                  }}>
+                    Full Name
+                  </label>
+                  <input 
+                    type="text" 
+                    value={profileData.name}
+                    onChange={(e) => setProfileData({...profileData, name: e.target.value})}
+                    style={{
+                      width: "100%",
+                      padding: "10px 12px",
+                      borderRadius: "8px",
+                      border: "1px solid #e5e7eb",
+                      fontSize: "0.9375rem"
+                    }}
+                  />
+                </div>
+                
+                <div style={{ marginBottom: "16px" }}>
+                  <label style={{ 
+                    display: "block", 
+                    marginBottom: "8px",
+                    fontSize: "0.875rem",
+                    fontWeight: "500",
+                    color: theme.text
+                  }}>
+                    Age
+                  </label>
+                  <input 
+                    type="text" 
+                    value={profileData.age}
+                    onChange={(e) => setProfileData({...profileData, age: e.target.value})}
+                    style={{
+                      width: "100%",
+                      padding: "10px 12px",
+                      borderRadius: "8px",
+                      border: "1px solid #e5e7eb",
+                      fontSize: "0.9375rem"
+                    }}
+                  />
+                </div>
+                
+                <div style={{ marginBottom: "24px" }}>
+                  <label style={{ 
+                    display: "block", 
+                    marginBottom: "8px",
+                    fontSize: "0.875rem",
+                    fontWeight: "500",
+                    color: theme.text
+                  }}>
+                    Location
+                  </label>
+                  <input 
+                    type="text" 
+                    value={profileData.location}
+                    onChange={(e) => setProfileData({...profileData, location: e.target.value})}
+                    style={{
+                      width: "100%",
+                      padding: "10px 12px",
+                      borderRadius: "8px",
+                      border: "1px solid #e5e7eb",
+                      fontSize: "0.9375rem"
+                    }}
+                  />
+                </div>
+                
+                <button 
+                  type="submit"
+                  style={{
+                    width: "100%",
+                    padding: "12px",
+                    borderRadius: "8px",
+                    backgroundColor: theme.primary,
+                    border: "none",
+                    color: "#111827",
+                    fontWeight: "600",
+                    cursor: "pointer"
+                  }}
+                >
+                  Save Changes
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Edit Cover Photo Modal */}
+      {showEditCover && (
+        <div style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: "rgba(0, 0, 0, 0.5)",
+          zIndex: 50,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center"
+        }}>
+          <div style={{
+            backgroundColor: "white",
+            borderRadius: "16px",
+            width: "90%",
+            maxWidth: "400px",
+            overflow: "hidden",
+            boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1)"
+          }}>
+            <div style={{
+              padding: "16px",
+              borderBottom: "1px solid #f3f4f6",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between"
+            }}>
+              <h3 style={{ fontSize: "1.25rem", fontWeight: "bold" }}>Edit Cover Photo</h3>
+              <button 
+                style={{
+                  background: "transparent",
+                  border: "none",
+                  cursor: "pointer"
+                }}
+                onClick={() => setShowEditCover(false)}
+              >
+                <X style={{ width: "20px", height: "20px" }} />
+              </button>
+            </div>
+            
+            <div style={{ padding: "16px", textAlign: "center" }}>
+              <div style={{
+                width: "100%",
+                height: "150px",
+                borderRadius: "12px",
+                backgroundColor: "#f3f4f6",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                marginBottom: "24px",
+                overflow: "hidden",
+                position: "relative"
+              }}>
+                <img
+                  src={coverPhoto}
+                  alt="Cover Preview"
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover"
+                  }}
+                />
+              </div>
+              
+              <label style={{
+                display: "inline-block",
+                padding: "12px 24px",
+                borderRadius: "8px",
+                backgroundColor: theme.primary,
+                color: "#111827",
+                fontWeight: "600",
+                cursor: "pointer",
+                marginBottom: "16px"
+              }}>
+                <input 
+                  type="file" 
+                  style={{ display: "none" }}
+                  accept="image/*"
+                  onChange={handleCoverPhotoChange}
+                />
+                Choose Photo
+              </label>
+              
+              <p style={{ 
+                fontSize: "0.875rem",
+                color: theme.lightText,
+                marginTop: "16px"
+              }}>
+                Recommended size: 1200x400 pixels
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Account Settings Modal */}
+      {showAccountSettings && (
+        <div style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: "rgba(0, 0, 0, 0.5)",
+          zIndex: 50,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center"
+        }}>
+          <div style={{
+            backgroundColor: "white",
+            borderRadius: "16px",
+            width: "90%",
+            maxWidth: "400px",
+            overflow: "hidden",
+            boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1)"
+          }}>
+            <div style={{
+              padding: "16px",
+              borderBottom: "1px solid #f3f4f6",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between"
+            }}>
+              <h3 style={{ fontSize: "1.25rem", fontWeight: "bold" }}>Account Settings</h3>
+              <button 
+                style={{
+                  background: "transparent",
+                  border: "none",
+                  cursor: "pointer"
+                }}
+                onClick={() => setShowAccountSettings(false)}
+              >
+                <X style={{ width: "20px", height: "20px" }} />
+              </button>
+            </div>
+            
+            <div style={{ padding: "16px" }}>
+              <form onSubmit={handleAccountSettingsSubmit}>
+                <div style={{ marginBottom: "16px" }}>
+                  <label style={{ 
+                    display: "block", 
+                    marginBottom: "8px",
+                    fontSize: "0.875rem",
+                    fontWeight: "500",
+                    color: theme.text
+                  }}>
+                    Email Address
+                  </label>
+                  <div style={{
+                    width: "100%",
+                    padding: "10px 12px",
+                    borderRadius: "8px",
+                    border: "1px solid #e5e7eb",
+                    fontSize: "0.9375rem",
+                    backgroundColor: "#f3f4f6",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "8px"
+                  }}>
+                    <Mail style={{ width: "16px", height: "16px", color: theme.lightText }} />
+                    <span>{accountSettings.email}</span>
+                  </div>
+                </div>
+                
+                <div style={{ marginBottom: "16px" }}>
+                  <label style={{ 
+                    display: "block", 
+                    marginBottom: "8px",
+                    fontSize: "0.875rem",
+                    fontWeight: "500",
+                    color: theme.text
+                  }}>
+                    Current Password
+                  </label>
+                  <div style={{
+                    position: "relative",
+                    display: "flex",
+                    alignItems: "center"
+                  }}>
+                    <input 
+                      type="password" 
+                      value={accountSettings.currentPassword}
+                      onChange={(e) => setAccountSettings({...accountSettings, currentPassword: e.target.value})}
+                      style={{
+                        width: "100%",
+                        padding: "10px 12px 10px 36px",
+                        borderRadius: "8px",
+                        border: "1px solid #e5e7eb",
+                        fontSize: "0.9375rem"
+                      }}
+                    />
+                    <Key style={{ 
+                      position: "absolute",
+                      left: "12px",
+                      width: "16px",
+                      height: "16px",
+                      color: theme.lightText
+                    }} />
+                  </div>
+                </div>
+                
+                <div style={{ marginBottom: "16px" }}>
+                  <label style={{ 
+                    display: "block", 
+                    marginBottom: "8px",
+                    fontSize: "0.875rem",
+                    fontWeight: "500",
+                    color: theme.text
+                  }}>
+                    New Password
+                  </label>
+                  <div style={{
+                    position: "relative",
+                    display: "flex",
+                    alignItems: "center"
+                  }}>
+                    <input 
+                      type="password" 
+                      value={accountSettings.newPassword}
+                      onChange={(e) => setAccountSettings({...accountSettings, newPassword: e.target.value})}
+                      style={{
+                        width: "100%",
+                        padding: "10px 12px 10px 36px",
+                        borderRadius: "8px",
+                        border: "1px solid #e5e7eb",
+                        fontSize: "0.9375rem"
+                      }}
+                    />
+                    <Key style={{ 
+                      position: "absolute",
+                      left: "12px",
+                      width: "16px",
+                      height: "16px",
+                      color: theme.lightText
+                    }} />
+                  </div>
+                </div>
+                
+                <div style={{ marginBottom: "24px" }}>
+                  <label style={{ 
+                    display: "block", 
+                    marginBottom: "8px",
+                    fontSize: "0.875rem",
+                    fontWeight: "500",
+                    color: theme.text
+                  }}>
+                    Confirm New Password
+                  </label>
+                  <div style={{
+                    position: "relative",
+                    display: "flex",
+                    alignItems: "center"
+                  }}>
+                    <input 
+                      type="password" 
+                      value={accountSettings.confirmPassword}
+                      onChange={(e) => setAccountSettings({...accountSettings, confirmPassword: e.target.value})}
+                      style={{
+                        width: "100%",
+                        padding: "10px 12px 10px 36px",
+                        borderRadius: "8px",
+                        border: "1px solid #e5e7eb",
+                        fontSize: "0.9375rem"
+                      }}
+                    />
+                    <Key style={{ 
+                      position: "absolute",
+                      left: "12px",
+                      width: "16px",
+                      height: "16px",
+                      color: theme.lightText
+                    }} />
+                  </div>
+                </div>
+                
+                <button 
+                  type="submit"
+                  style={{
+                    width: "100%",
+                    padding: "12px",
+                    borderRadius: "8px",
+                    backgroundColor: theme.primary,
+                    border: "none",
+                    color: "#111827",
+                    fontWeight: "600",
+                    cursor: "pointer"
+                  }}
+                >
+                  Update Password
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Schedule Modal */}
+      {showSchedule && (
+        <div style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: "rgba(0, 0, 0, 0.5)",
+          zIndex: 50,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center"
+        }}>
+          <div style={{
+            backgroundColor: "white",
+            borderRadius: "16px",
+            width: "90%",
+            maxWidth: "400px",
+            overflow: "hidden",
+            boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1)"
+          }}>
+            <div style={{
+              padding: "16px",
+              borderBottom: "1px solid #f3f4f6",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between"
+            }}>
+              <h3 style={{ fontSize: "1.25rem", fontWeight: "bold" }}>Upcoming Schedule</h3>
+              <button 
+                style={{
+                  background: "transparent",
+                  border: "none",
+                  cursor: "pointer"
+                }}
+                onClick={() => setShowSchedule(false)}
+              >
+                <X style={{ width: "20px", height: "20px" }} />
+              </button>
+            </div>
+            
+            <div style={{ padding: "16px", maxHeight: "400px", overflowY: "auto" }}>
+              {[
+                { 
+                  date: "Feb 15, 2024", 
+                  time: "4:00 PM", 
+                  sport: "Football", 
+                  opponent: "Team Phoenix", 
+                  location: "Central Park Field" 
+                },
+                { 
+                  date: "Feb 18, 2024", 
+                  time: "10:00 AM", 
+                  sport: "Tennis", 
+                  opponent: "Sarah Miller", 
+                  location: "Riverside Courts" 
+                },
+                { 
+                  date: "Feb 20, 2024", 
+                  time: "6:30 PM", 
+                  sport: "Basketball", 
+                  opponent: "Dunk Masters", 
+                  location: "City Arena" 
+                },
+                { 
+                  date: "Feb 22, 2024", 
+                  time: "5:00 PM", 
+                  sport: "Football", 
+                  opponent: "United FC", 
+                  location: "Westside Stadium" 
+                },
+              ].map((match, index) => (
+                <div 
+                  key={index}
+                  style={{
+                    padding: "16px",
+                    marginBottom: "12px",
+                    borderRadius: "12px",
+                    backgroundColor: "#f9fafb",
+                    border: "1px solid #f3f4f6"
+                  }}
+                >
+                  <div style={{ 
+                    display: "flex", 
+                    alignItems: "center", 
+                    justifyContent: "space-between",
+                    marginBottom: "8px"
+                  }}>
+                    <div style={{ fontWeight: "600" }}>{match.sport}</div>
+                    <div style={{ 
+                      fontSize: "0.875rem", 
+                      color: theme.lightText
+                    }}>
+                      {match.date}
+                    </div>
+                  </div>
+                  <div style={{ 
+                    display: "flex", 
+                    alignItems: "center", 
+                    justifyContent: "space-between",
+                    marginBottom: "4px"
+                  }}>
+                    <div style={{ fontSize: "0.875rem" }}>vs {match.opponent}</div>
+                    <div style={{ 
+                      fontSize: "0.875rem", 
+                      color: theme.lightText
+                    }}>
+                      {match.time}
+                    </div>
+                  </div>
+                  <div style={{ 
+                    fontSize: "0.75rem", 
+                    color: theme.lightText,
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "4px"
+                  }}>
+                    <svg style={{ width: "12px", height: "12px" }} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    {match.location}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Success Notification */}
+      {showSuccess && (
+        <div style={{
+          position: "fixed",
+          bottom: "24px",
+          left: "50%",
+          transform: "translateX(-50%)",
+          backgroundColor: theme.secondary,
+          color: "white",
+          padding: "12px 24px",
+          borderRadius: "8px",
+          boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
+          zIndex: 100,
+          display: "flex",
+          alignItems: "center",
+          gap: "8px"
+        }}>
+          <Check style={{ width: "20px", height: "20px" }} />
+          <span>Changes saved successfully!</span>
+        </div>
+      )}
     </div>
   );
 };

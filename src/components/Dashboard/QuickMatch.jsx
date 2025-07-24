@@ -193,30 +193,7 @@ const QuickMatch = () => {
         { status: "available" }
       ]
     },
-    {
-      id: 6,
-      sport: "badminton",
-      title: "Doubles Badminton Match",
-      location: "Smash Arena",
-      time: "Today 9:00 PM",
-      players: "2/4",
-      level: "Intermediate",
-      image: "https://res.cloudinary.com/de6u5kbiw/image/upload/v1752067735/dexciss%20site/dexplay/optimal/pexels-vladvictoria-2202685_1_ydqoy4.jpg",
-      host: {
-        name: "Priya Nair",
-        avatar: "https://res.cloudinary.com/de6u5kbiw/image/upload/v1752217662/People%20Profile/pm0476_w0_dfthen.avif",
-        rating: 4.4
-      },
-      comments: 2,
-      status: "available",
-      price: "₹220 per person",
-      distance: "2.1 km away",
-      slots: [
-        { status: "filled", player: { name: "Priya", level: "Intermediate" } },
-        { status: "available" },
-        { status: "available" }
-      ]
-    }
+    
     
   ];
 
